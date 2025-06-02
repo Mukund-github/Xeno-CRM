@@ -54,46 +54,12 @@ Start the frontend:
 Visit http://localhost:3000 to use the app.
 
 5. Architecture diagram... (tried to portray the data flow keeping it simple and clean)
-                                ┌─────────────────────────────┐
-                                │      Google OAuth Server    │
-                                └────────────┬────────────────┘
-                                             │
-                    OAuth Login              │
-                                             ▼
-┌─────────────────────────────┐    Passport.js (GoogleStrategy)    ┌───────────────────────────────┐
-│         Client (React)      │◀──────────────────────────────────▶│       Express Backend         │
-│                             │     - Login Button                 │  - Routes: /auth, /api/*      │
-│  - Campaign Builder UI      │     - Campaign Forms               │  - Google OAuth Callback      │
-│  - Rule Segmentation UI     │     - View Campaigns               │  - Segmentation Logic         │
-│  - Audience Count Preview   │                                    │  - 90% Delivery Simulation    │
-└────────────┬────────────────┘                                    └───────┬────────────────────────┘
-             │                                                                  │
-             ▼                                                                  ▼
-        Session Cookie                                               ┌───────────────────────────────┐
-        (client stores)                                              │           MongoDB             │
-                                                                     │   (via Mongoose Atlas)          │
-                                                                     │                               │
-                                                                     │ ┌───────────────────────────┐ │
-                                                                     │ │      customers            │ │
-                                                                     │ │ - name, age, visits, etc. │ │
-                                                                     │ └───────────────────────────┘ │
-                                                                     │ ┌───────────────────────────┐ │
-                                                                     │ │      orders               │ │
-                                                                     │ │ - total_spent, timestamp  │ │
-                                                                     │ └───────────────────────────┘ │
-                                                                     │ ┌───────────────────────────┐ │
-                                                                     │ │      campaigns            │ │
-                                                                     │ │ - rules, metadata         │ │
-                                                                     │ └───────────────────────────┘ │
-                                                                     │ ┌───────────────────────────┐ │
-                                                                     │ │ communicationLogs         │ │
-                                                                     │ │ - status: delivered/skipped││
-                                                                     │ └───────────────────────────┘ │
-                                                                     └───────────────────────────────┘
+![image](https://github.com/user-attachments/assets/874f9651-055d-46f6-af25-01712328d174)
+![image](https://github.com/user-attachments/assets/6a295192-258f-4521-a7b5-406adb539ec8)
 
-   
 
 Explanation of Entities and Flow...
+
 Google OAuth Login Flow:
 - Client triggers login → Passport.js handles Google login → successful login stores session cookie
 
